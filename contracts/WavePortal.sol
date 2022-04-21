@@ -18,7 +18,11 @@ contract WavePortal {
     }
     function getTotalWaves() public view returns (uint256) {
         console.log("We have %d waves!", totalWaves);
-        console.log("the address %s has %d number of waves", msg.sender , balances[msg.sender]);
         return totalWaves;
+    }
+
+       function getAdressWaves() public view returns (uint256) {
+        console.log("the address %s has %d number of waves", msg.sender , balances[msg.sender]);
+        return balances[msg.sender];
     }
 }

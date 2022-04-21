@@ -1,21 +1,26 @@
 require("@nomiclabs/hardhat-waffle");
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-  const accounts = await hre.ethers.getSigners();
+//el .config busca  por defecto el .env de la carpeta
+//require("dotenv").config();
 
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
+//traemos los valores de  .env para que no se muestre en el archivo de git
+const projecId = process.env.DEPLOYER_SIGNER_PRIVATE_KEY;
+//"https://eth-rinkeby.alchemyapi.io/v2/-mlymyHivJd5Tk22nOROoyWi4vE7a5hS";
+const privateKey = process.env.DEPLOYER_SIGNER_PRIVATE_KEY;
 module.exports = {
   solidity: "0.8.4",
+  //Si escribimos mainnet dentro de networks podemos administrar mas de una red. networks:{mainnet{...
+  networks: {
+    rinkeby: {
+      url: ` https://eth-rinkeby.alchemyapi.io/v2/${projecId}`,
+
+      //Debemos de pasarle que cueta va a firmar la transaccion
+      //Es un arreglo porque pueden haber mas de una cuenta
+      accounts: [
+        //Acordarse siempre poner el 0x adelante
+        //npx hardhat run scripts/sample-script.js --network rinkeby para subirlo a la red de prueba
+        privateKey,
+      ],
+    },
+  },
 };
