@@ -18,22 +18,70 @@ contract WavePortal {
     //an array of the struct to stroe data
       Wave[] waves;
 
+       /*
+     * We will be using this below to help generate a random number
+     */
+    uint256 private seed;
+
+     /*
+     * a mapping that will store the timestamp when the user waved
+     */
+     mapping (address => uint256)  lastWavedAt;
+
     constructor() payable {
         console.log("I am a contract and I am smart");
+        /*
+         * Set the initial seed
+         */
+        seed = (block.timestamp + block.difficulty) % 100;
     }
     function wave(string memory _message)public{
+        /*
+         * We need to make sure the current timestamp is at least 15-minutes bigger than the last timestamp we stored
+         */
+        require(
+            lastWavedAt[msg.sender] + 15 minutes < block.timestamp,
+            "Wait 15m"
+        );
+
+        /*
+         * Update the current timestamp we have for the user
+         */
+        lastWavedAt[msg.sender] = block.timestamp;
+
         totalWaves+=1;
         balances[msg.sender]+=1;
         console.log("%s has waved",msg.sender);
         waves.push(Wave(msg.sender, _message, block.timestamp));
+
+
+         /*
+         * Generate a new seed for the next user that sends a wave
+         */
+        seed = (block.difficulty + block.timestamp + seed) % 100;
+
+        console.log("Random # generated: %d", seed);
+
+
+         /*
+         * Give a 50% chance that the user wins the prize.
+         */
+        if (seed <= 50) {
+            console.log("%s won!", msg.sender);
+
+            /*
+             * The same code we had before to send the prize.
+             */
+            uint256 prizeAmount = 0.0001 ether;
+            require(
+                prizeAmount <= address(this).balance,
+                "The contract doesn't have that amount of ether"
+            );
+            (bool success, ) = (msg.sender).call{value: prizeAmount}("");
+            require(success, "Fail to withrow the money from the contract");
+        }
+
         emit NewWave(msg.sender, block.timestamp, _message);
-
-        uint prizeAmount=0.0001 ether;
-        // address(this).balance is the balance of the contract itself
-        require(prizeAmount<= address(this).balance , "The contract doesn't have that amount of ether");
-
-        (bool success,)= (msg.sender).call{value:prizeAmount}("");
-        require(success, "Failed to withraw  the money");
     }
 
      function getAllWaves() public view returns (Wave[] memory) {
@@ -44,6 +92,7 @@ contract WavePortal {
         console.log("We have %d waves!", totalWaves);
         return totalWaves;
     }
+    
 
        function getAdressWaves(address _address) public view returns (uint256) {
         console.log("the address %s has %d number of waves",_address , balances[_address]);
