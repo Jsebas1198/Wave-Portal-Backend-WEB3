@@ -1,10 +1,10 @@
 require("@nomiclabs/hardhat-waffle");
 
 //el .config busca  por defecto el .env de la carpeta
-//require("dotenv").config();
+require("dotenv").config();
 
 //traemos los valores de  .env para que no se muestre en el archivo de git
-const projecId = process.env.DEPLOYER_SIGNER_PRIVATE_KEY;
+const projecId = process.env.ALCHEMY_PROJECT_ID;
 //"https://eth-rinkeby.alchemyapi.io/v2/-mlymyHivJd5Tk22nOROoyWi4vE7a5hS";
 const privateKey = process.env.DEPLOYER_SIGNER_PRIVATE_KEY;
 module.exports = {
