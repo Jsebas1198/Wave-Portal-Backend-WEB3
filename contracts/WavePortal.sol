@@ -18,7 +18,8 @@ contract WavePortal {
 
     //let the contract know that the event is going to be emitted
     event NewWave(address indexed from, uint256 timestamp, string message, Winner isWinner);
-    
+    event NewTotalWaves(uint256 totalWaves);
+    event NewAddressWave(uint256 addressWaves);
     //struct for the event
       struct Wave {
         address waver; // The address of the user who waved.
@@ -96,6 +97,8 @@ contract WavePortal {
 
         waves.push(newWaves);
         emit NewWave(msg.sender, block.timestamp, _message,newWaves.isWinner);
+        emit NewTotalWaves(totalWaves);
+        emit NewAddressWave(balances[msg.sender]);
     }
 
      function getAllWaves() public view returns (Wave[] memory) {
