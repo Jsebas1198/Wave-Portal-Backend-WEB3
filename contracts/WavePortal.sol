@@ -7,17 +7,27 @@ import "hardhat/console.sol";
 contract WavePortal {
     uint256 totalWaves;
     mapping(address => uint) balances;
+
+    //enum if the address is a winner or not
+    enum Winner {
+        NOT_WINNER,
+        WINNER
+    }
+
+
+
     //let the contract know that the event is going to be emitted
-    event NewWave(address indexed from, uint256 timestamp, string message);
+    event NewWave(address indexed from, uint256 timestamp, string message, Winner isWinner);
+    
     //struct for the event
       struct Wave {
         address waver; // The address of the user who waved.
         string message; // The message the user sent.
         uint256 timestamp; // The timestamp when the user waved.
+        Winner isWinner; // The enum value for if the user is a winner or not.
     }
     //an array of the struct to stroe data
       Wave[] waves;
-
        /*
      * We will be using this below to help generate a random number
      */
@@ -52,8 +62,10 @@ contract WavePortal {
         totalWaves+=1;
         balances[msg.sender]+=1;
         console.log("%s has waved",msg.sender);
-        waves.push(Wave(msg.sender, _message, block.timestamp));
+        //waves.push(Wave(msg.sender, _message, block.timestamp, Winner.NOT_WINNER));
 
+        //Create a new struct with the information we need
+         Wave memory newWaves=Wave(msg.sender, _message, block.timestamp, Winner.NOT_WINNER);
 
          /*
          * Generate a new seed for the next user that sends a wave
@@ -79,9 +91,11 @@ contract WavePortal {
             );
             (bool success, ) = (msg.sender).call{value: prizeAmount}("");
             require(success, "Fail to withrow the money from the contract");
+           newWaves=Wave(msg.sender, _message, block.timestamp, Winner.WINNER);
         }
 
-        emit NewWave(msg.sender, block.timestamp, _message);
+        waves.push(newWaves);
+        emit NewWave(msg.sender, block.timestamp, _message,newWaves.isWinner);
     }
 
      function getAllWaves() public view returns (Wave[] memory) {
