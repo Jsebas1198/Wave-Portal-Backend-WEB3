@@ -1,19 +1,28 @@
-## About the contract
+Wave portal project
 
-This is an smart contract that store messages or waves that will be shown on the Front-End of the App, so everyone that have access to it, will be able to send and see all the messages that the community sent in real time. When the contract is deployed, it is funded with some eth, and when an address calls the weaver function have a chance to get 0.001 eth that will be sent by the contract to the address.
+**Link to project:** https://shimmering-crumble-9e7191.netlify.app
 
-# Basic Sample Hardhat Project
+![Wave_Portal](https://user-images.githubusercontent.com/96799477/168448232-1871a2a5-4eb6-4904-9391-0ddebfc5fc7d.png)
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+## How It's Made:
 
-Try running some of the following tasks:
+**Tech used:** HTML, CSS, JavaScript, React, Solidity, Hardhat, ethers
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+To use the app, you must be connected to a Rinkeby network, write anything that you want on the box and then send a message to everyone that have access to the portal, when a wave is sent, the address that sent it have a chance to get 0,0001 eth, the number of waves that an address sent is shown on the interface as the total number of waves. To interact with the smart contract in this project I use ethers, but another option could be web3. The number of waves changes in real time thanks to the event listeners of the smart contract events that are programmed on the code.
+
+## Optimizations
+
+The app is not responsive, so an optimization for this project could be to make it responsive.  
+
+## Lessons Learned:
+
+Use of hardhat to test the smart contract and the use of ethers, get a better acknowledge of solidity to program smart contracts an use the events in it to render the values on real time in the UI.
+
+## Examples:
+Take a look at these couple examples that I have in my own portfolio:
+
+**PlatziPunks-Backend:** https://github.com/Jsebas1198/PlatziPunks-Backend-SmartContracts-WEB3
+
+**PlatziPunks-Frontend:** https://github.com/Jsebas1198/PlatziPunks-Frontend-WEB3
+
+**CryptoBirz-Marketplace:** https://github.com/Jsebas1198/CryptoBirz-Marketplace
